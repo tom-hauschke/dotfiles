@@ -1,0 +1,121 @@
+#!/usr/bin/env zsh
+
+## Loading Section
+autoload compinit colors zcalc
+
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+    compinit;
+else
+    compinit -C;
+fi;
+
+## Environment Section
+export EDITOR='vim'
+export SSH_KEY_PATH='~/.ssh/rsa_id'
+export LESSHISTFILE='-'
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+## Alias Section
+# General
+alias df='df -h'
+alias sdn='shutdown now'
+alias sdrn='shutdown -r now'
+alias updateSystem='sudo pacman -Syyu'
+alias trexa='exa -TaD'
+
+# Replacement Section
+alias ls='exa'
+alias la='exa -lah --git'
+alias find='fd'
+
+# Git
+alias gs='git status'
+alias gf='git fetch'
+alias ga='git add -p'
+alias gc='git commit'
+alias gp='git push'
+alias gitu='git add . && git commit && git push'
+
+# Docker
+alias dkrps='docker ps'
+alias dkrpsa='docker ps -a'
+
+# Programs
+alias tmux='tmux -f ~/.config/tmux/tmux.conf'
+
+## Options Section
+setopt appendhistory
+setopt extendedglob
+setopt histignorealldups
+setopt histignorespace
+setopt interactivecomments
+setopt nocaseglob
+setopt numericglobsort
+setopt promptsubst
+setopt rcexpandparam
+setopt checkjobs
+
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' rehash true
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.config/zsh/cache
+HISTFILE=~/.config/zsh/zsh_history
+HISTSIZE=1000
+SAVEHIST=500
+WORDCHARS=${WORDCHARS//\/[&.;]}
+
+## Keybinding Section
+bindkey -v
+
+# Home Key (TODO only need one?)
+bindkey '^[[7~' beginning-of-line
+bindkey '^[[H' beginning-of-line
+
+# End Key (TODO only need one?)
+bindkey '^[[8~' end-of-line
+bindkey '^[[F' end-of-line
+
+# Search
+bindkey '^[[5~' history-beginning-search-backward # Page up key
+bindkey '^[[6~' history-beginning-search-forward  # Page down key
+bindkey '^R' history-incremental-search-backward
+bindkey '^S' history-incremental-search-forward
+bindkey '^P' history-search-backward
+bindkey '^N' history-search-forward
+
+## Theme Section
+colors
+
+# primary prompt
+PS1='\
+%F{reset_color}[ \
+%B%F{14}%D%b \
+%B%F{14}%T%b\
+%F{reset_color} ] \
+%B%F{11}%n%b\
+%F{reset_color%}@\
+%B%F{10}%m%b\
+%B%F{12}%~%b\
+%F{reset_color}
+ %F{12}»\
+%F{reset_color} \
+'
+
+# TODO Git status and error code
+
+## Plugin Section
+source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+## Tmux Section
+if [[ -z "$TMUX" ]] ;then
+    ID="$( tmux ls | grep -vm1 attached | cut -d: -f1 )"
+    if [[ -z "$ID" ]] ;then
+        tmux new-session
+    else
+        tmux attach-session -t "$ID"
+    fi
+fi
+
