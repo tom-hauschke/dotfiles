@@ -10,10 +10,15 @@ else
 fi;
 
 ## Environment Section
-export EDITOR='vim'
+export EDITOR='nvim'
+export BROWSER='/usr/bin/firefox'
 export SSH_KEY_PATH='~/.ssh/rsa_id'
 export LESSHISTFILE='-'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export KUBECONFIG="$HOME/.kube/config:$HOME/.kube/kubeconfigs/funkedigital/fd-cloud.yaml"
+export PATH="$PATH:$HOME/data/scripts:$HOME/.krew/bin:$HOME/go/bin"
+export TERM='tmux-256color'
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --no-ignore --follow'
 
 ## Alias Section
 # General
@@ -21,27 +26,45 @@ alias df='df -h'
 alias sdn='shutdown now'
 alias sdrn='shutdown -r now'
 alias updateSystem='sudo pacman -Syyu'
-alias trexa='exa -TaD'
+alias trexa='exa -Ta'
+alias trexad='exa -TaD'
+alias sc='i3-scrot -sc --line mode=edge'
 
 # Replacement Section
 alias ls='exa'
 alias la='exa -lah --git'
 alias find='fd'
+alias e='nvim'
 
 # Git
 alias gs='git status'
-alias gf='git fetch'
+alias gf='git fetch -p --tags'
 alias ga='git add -p'
-alias gc='git commit'
+alias gc='git commit -s'
 alias gp='git push'
+alias gpt='git push --tags'
+alias gl='git pull'
 alias gitu='git add . && git commit && git push'
+alias gcob='git checkout -b'
+alias gco='git checkout'
 
 # Docker
 alias dkrps='docker ps'
 alias dkrpsa='docker ps -a'
 
+# Kubectl
+alias k='kubectl'
+alias kcu='kubectl config use-context'
+
 # Programs
 alias tmux='tmux -f ~/.config/tmux/tmux.conf'
+alias less='less -XRF'
+
+# dir movement
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 
 ## Options Section
 setopt appendhistory
@@ -69,11 +92,11 @@ WORDCHARS=${WORDCHARS//\/[&.;]}
 ## Keybinding Section
 bindkey -v
 
-# Home Key (TODO only need one?)
+# Home Key
 bindkey '^[[7~' beginning-of-line
 bindkey '^[[H' beginning-of-line
 
-# End Key (TODO only need one?)
+# End Key
 bindkey '^[[8~' end-of-line
 bindkey '^[[F' end-of-line
 
@@ -88,7 +111,39 @@ bindkey '^N' history-search-forward
 ## Theme Section
 colors
 
-# primary prompt
+## Plugin Section
+source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $ZDOTDIR/plugins/zsh-git-prompt/zshrc.sh
+source $ZDOTDIR/plugins/zsh-kubectl-prompt/kubectl.zsh
+source <(kubectl completion zsh)
+source <(minikube completion zsh)
+source <(k9s completion zsh)
+source <(kube-linter completion zsh)
+source <(flux completion zsh)
+source <(terraform-docs completion zsh)
+
+# git prompt config
+ZSH_THEME_GIT_PROMPT_PREFIX="["
+ZSH_THEME_GIT_PROMPT_SUFFIX="]"
+ZSH_THEME_GIT_PROMPT_HASH_PREFIX=":"
+ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
+ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
+ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[red]%}%{●%G%}"
+ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%}%{✖%G%}"
+ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[blue]%}%{%G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{↓%2G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND_AHEAD_SEPARATOR=""
+ZSH_THEME_GIT_PROMPT_AHEAD="%{↑%2G%}"
+ZSH_THEME_GIT_PROMPT_STASHED="%{$fg_bold[blue]%}%{%G%}"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%}%{%G%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔%G%}"
+ZSH_THEME_GIT_PROMPT_LOCAL=" L"
+# The remote branch will be shown between these two
+ZSH_THEME_GIT_PROMPT_UPSTREAM_FRONT=" {%{$fg_bold[blue]%}"
+ZSH_THEME_GIT_PROMPT_UPSTREAM_END="%{${reset_color}%}}"
+
+## Primary prompt
 PS1='\
 %F{reset_color}[ \
 %B%F{14}%D%b \
@@ -103,11 +158,8 @@ PS1='\
 %F{reset_color} \
 '
 
-# TODO Git status and error code
-
-## Plugin Section
-source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+## Local source
+source ~/.config/zsh/.zshrc.local
 
 ## Tmux Section
 if [[ -z "$TMUX" ]] ;then

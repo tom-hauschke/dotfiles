@@ -1,3 +1,5 @@
 Host *
-    Compression yes
-    ForwardAgent yes
+  Compression yes
+  ForwardAgent yes
+
+Include config.local

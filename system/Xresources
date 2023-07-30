@@ -1,14 +1,17 @@
-#include "data/dracula/xresources/Xresources"
+#include "data/dracula-theme/xresources/Xresources"
 
-URxvt*font: xft:Terminess TTF Nerd Font Mono:size=11
+URxvt*font:           xft:Terminess Nerd Font Mono:size=12
+URxvt*boldFont:       xft:Terminess Nerd Font Mono:bold:size=12
+URxvt*italicFont:     xft:Terminess Nerd Font Mono:italic:size=12
+URxvt*boldItalicFont: xft:Terminess Nerd Font Mono:bold:italic:size=12
 
-URxvt*scrollBar: false
+URxvt*scrollBar:            false
 URxvt*mouseWheelScrollPage: false
-URxvt*cursorBlink: true
-URxvt*saveLines: 0
-URxvt*altSendsEscape: true
+URxvt*cursorBlink:          true
+URxvt*saveLines:            0
+URxvt*altSendsEscape:       true
 
-URxvt.iso14755: false
+URxvt.iso14755:               false
 URxvt.keysym.Shift-Control-V: eval:paste_clipboard
 URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
-URxvt.clipboard.autocopy: true
+URxvt.clipboard.autocopy:     true
