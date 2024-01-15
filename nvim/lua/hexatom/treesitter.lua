@@ -1,9 +1,11 @@
-local status_ok, configs = pcall(require, 'nvim-treesitter.configs')
-if not status_ok then return end
+local treesitter_ok, configs = pcall(require, 'nvim-treesitter.configs')
+if not treesitter_ok then return end
 
 configs.setup({
   ensure_installed = 'all',
   auto_install = true,
+  sync_install = true,
+  modules = {},
   ignore_install = {},
   autopairs = {
     enable = true,
@@ -14,9 +16,6 @@ configs.setup({
     additional_vim_regex_highlighting = true,
   },
   indent = { enable = true, disable = {} },
-  context_commentstring = {
-    enable = true,
-  },
   rainbow = {
     enable = true,
     disable = {},

@@ -1,8 +1,4 @@
-local status_ok, ib = pcall(require, 'indent_blankline')
+local status_ok, ibl = pcall(require, 'ibl')
 if not status_ok then return end
 
-ib.setup({
-  space_char_blankline = ' ',
-  show_current_context = true,
-  show_current_context_start = true,
-})
+ibl.setup()

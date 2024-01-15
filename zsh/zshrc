@@ -31,8 +31,8 @@ alias trexad='exa -TaD'
 alias sc='i3-scrot -sc --line mode=edge'
 
 # Replacement Section
-alias ls='exa'
-alias la='exa -lah --git'
+alias ls='eza'
+alias la='eza -lah --git'
 alias find='fd'
 alias e='nvim'
 
@@ -152,7 +152,9 @@ PS1='\
 %B%F{11}%n%b\
 %F{reset_color%}@\
 %B%F{10}%m%b\
-%B%F{12}%~%b\
+%B%F{12}%~%b \
+%F{13}<$ZSH_KUBECTL_CONTEXT> \
+$(git_super_status)\
 %F{reset_color}
  %F{12}»\
 %F{reset_color} \

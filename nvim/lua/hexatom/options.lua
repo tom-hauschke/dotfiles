@@ -34,7 +34,6 @@ local options = {
   listchars = { tab = '', space = '·', trail = '·', extends = '', precedes = '' },
   mouse = '',
   number = true,
-  relativenumber = true,
   scrolloff = 99,
   sidescrolloff = 20,
   signcolumn = 'yes',
@@ -72,6 +71,7 @@ local globals = {
   loaded_ruby_provider = 0,
   mapleader = ' ',
   maplocalleader = ' ',
+  skip_ts_context_commentstring_module = true,
 }
 
 apply_options(globals, true)

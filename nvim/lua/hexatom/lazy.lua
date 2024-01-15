@@ -37,7 +37,11 @@ local plugins = {
   'hrsh7th/cmp-nvim-lua',
 
   -- snippets
-  'L3MON4D3/LuaSnip',
+  {
+    'L3MON4D3/LuaSnip',
+    -- install jsregexp (optional!).
+    build = 'make install_jsregexp',
+  },
   'rafamadriz/friendly-snippets',
 
   -- LSP
@@ -62,7 +66,8 @@ local plugins = {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
   },
-  'p00f/nvim-ts-rainbow',
+  'nvim-treesitter/nvim-treesitter-context',
+  'nvim-treesitter/nvim-treesitter-refactor',
   'JoosepAlviste/nvim-ts-context-commentstring',
   'nvim-treesitter/playground',
 
