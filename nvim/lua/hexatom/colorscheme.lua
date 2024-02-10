@@ -1,3 +1,13 @@
+local status_ok, dracula = pcall(require, 'dracula')
+if not status_ok then return end
+
+dracula.setup({
+  -- show the '~' characters after the end of buffers
+  show_end_of_buffer = true, -- default false
+  -- set italic comment
+  italic_comment = true, -- default false
+})
+
 vim.cmd([[colorscheme dracula]])
 
 local highlight = function(group, fg, bg, attr, sp)

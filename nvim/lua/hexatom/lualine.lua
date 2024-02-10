@@ -34,15 +34,14 @@ local max_lines = function() return vim.fn.line('$') end
 
 lualine.setup({
   options = {
-    theme = 'dracula',
+    theme = 'dracula-nvim',
     component_separators = { left = '', right = '' },
-    --[[ section_separators = { left = '', right = '' }, ]]
     disabled_filetypes = { 'dashboard', 'NvimTree', 'Outline' },
     globalstatus = true,
   },
   sections = {
     lualine_a = { 'mode' },
-    lualine_b = { diagnostics, branch },
+    lualine_b = { diagnostics, branch, 'diff' },
     lualine_c = { filename },
     lualine_x = { 'filetype', 'encoding', 'fileformat' },
     lualine_y = { 'location', progress, max_lines },

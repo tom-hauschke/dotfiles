@@ -54,6 +54,10 @@ local normal_mappings = {
     o = { '<c-w>v', 'split pane vertically' },
     r = { ':lua vim.lsp.buf.rename()<cr>', 'rename token' },
     p = { ':set paste!<cr>', 'toggle paste mode' },
+    s = {
+      w = { ':lua require("spectre").open_visual({select_word=true})<cr>', 'search current word' },
+    },
+    S = { ':lua require("spectre").toggle()<cr>', 'toggle spectre' },
     t = {
       name = 'trees and lists',
       d = { ':lua vim.diagnostic.setloclist()<cr>', 'open diagnostics list' },
@@ -84,10 +88,10 @@ local normal_mappings = {
       name = 'folding',
       c = { 'close fold under cursor' },
       C = { 'close all folds under cursor' },
-      M = { 'close all folds' },
+      M = { ':lua require("ufo").closeAllFolds()<cr>', 'close all folds' },
       o = { 'open fold under cursor' },
       O = { 'open all folds under cursor' },
-      R = { 'open all folds' },
+      R = { ':lua require("ufo").openAllFolds()<cr>', 'open all folds' },
     },
     ['='] = { ':Format<cr>', 'format file' },
   },
@@ -104,6 +108,7 @@ local normal_mappings = {
       d = { ':lua vim.diagnostic.goto_prev', 'diagnostic' },
     },
     r = { ':lua require("telescope.builtin").lsp_references()<cr>', 'references' },
+    x = { ':sil !xdg-open <c-r><c-a><cr>', 'open link' },
   },
   H = { ':bprev<cr>', 'focus previous buffer' },
   ['<c-j>'] = { ':m +1<cr>', 'move line up' },
@@ -135,6 +140,9 @@ local insert_mappings = {
 
 local visual_mappings = {
   p = { '"_dP', 'which_key_ignore' },
+  s = {
+    w = { '<esc>:lua require("spectre").open_visual()<cr>' },
+  },
   ['<'] = { '<gv', 'which_key_ignore' },
   ['>'] = { '>gv', 'which_key_ignore' },
 }

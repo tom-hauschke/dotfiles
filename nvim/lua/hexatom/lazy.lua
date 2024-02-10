@@ -17,6 +17,7 @@ local plugins = {
     'folke/lazy.nvim',
     build = ':lua require("lazy").update({ show = false })',
   },
+
   -- Common Dependencies
   'nvim-lua/popup.nvim',
   'nvim-lua/plenary.nvim',
@@ -24,41 +25,52 @@ local plugins = {
   -- Dracula colorscheme
   'Mofiqul/dracula.nvim',
 
-  -- Indentlines
-  'lukas-reineke/indent-blankline.nvim',
-
-  -- LSP lines
-  'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-
-  -- cmp plugins
-  'hrsh7th/nvim-cmp',
-  'hrsh7th/cmp-buffer',
-  'hrsh7th/cmp-path',
-  'hrsh7th/cmp-cmdline',
-  'saadparwaiz1/cmp_luasnip',
-  'hrsh7th/cmp-nvim-lsp',
-  'hrsh7th/cmp-nvim-lua',
-
-  -- snippets
+  -- Rainbow delimiters
   {
-    'L3MON4D3/LuaSnip',
-    -- install jsregexp (optional!).
-    build = 'make install_jsregexp',
+    'HiPhish/rainbow-delimiters.nvim',
+    event = 'BufEnter',
+    dependencies = {
+      'lukas-reineke/indent-blankline.nvim',
+    },
   },
-  'rafamadriz/friendly-snippets',
+
+  -- cmp & co
+  {
+    'hrsh7th/nvim-cmp',
+    event = { 'BufReadPost', 'BufNewFile' },
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+      'rafamadriz/friendly-snippets',
+      'onsails/lspkind.nvim',
+      'windwp/nvim-autopairs',
+    },
+  },
 
   -- LSP
   {
-    'williamboman/mason.nvim',
-    build = ':MasonUpdate',
+    'neovim/nvim-lspconfig',
+    event = { 'BufReadPost' },
+    cmd = { 'LspInfo', 'LspInstall', 'LspUninstall', 'Mason' },
+    dependencies = {
+      {
+        'williamboman/mason.nvim',
+        build = ':MasonUpdate',
+      },
+      'williamboman/mason-lspconfig.nvim',
+      'hrsh7th/cmp-nvim-lsp',
+      'mfussenegger/nvim-lint',
+      'mhartington/formatter.nvim',
+      'mfussenegger/nvim-ansible',
+      'towolf/vim-helm',
+      'b0o/schemastore.nvim',
+      'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+    },
   },
-  'williamboman/mason-lspconfig.nvim',
-  'neovim/nvim-lspconfig',
-  'mfussenegger/nvim-lint',
-  'mhartington/formatter.nvim',
-  'mfussenegger/nvim-ansible',
-  'towolf/vim-helm',
-  'b0o/schemastore.nvim',
 
   -- Telescope
   'nvim-telescope/telescope.nvim',
@@ -67,21 +79,29 @@ local plugins = {
   -- Treesitter
   {
     'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
+    build = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+    event = { 'BufEnter' },
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-context',
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      'nvim-treesitter/playground',
+    },
   },
-  'HiPhish/rainbow-delimiters.nvim',
-  'JoosepAlviste/nvim-ts-context-commentstring',
-  'nvim-treesitter/playground',
-  'nvim-treesitter/nvim-treesitter-context',
-
-  -- Autopairs
-  'windwp/nvim-autopairs',
 
   -- Comment
-  'numToStr/Comment.nvim',
+  {
+    'numToStr/Comment.nvim',
+    event = { 'BufEnter' },
+    dependencies = {
+      'JoosepAlviste/nvim-ts-context-commentstring',
+    },
+  },
 
   -- Gitsigns
-  'lewis6991/gitsigns.nvim',
+  {
+    'lewis6991/gitsigns.nvim',
+    event = 'VeryLazy',
+  },
 
   -- NvimTree
   'kyazdani42/nvim-tree.lua',
@@ -98,13 +118,46 @@ local plugins = {
   'jiaoshijie/undotree',
 
   -- Lualine
-  'nvim-lualine/lualine.nvim',
+  {
+    'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
+  },
 
   -- Whichkey
   'folke/which-key.nvim',
 
   -- gitignore
   'wintermute-cell/gitignore.nvim',
+
+  -- dressing
+  'stevearc/dressing.nvim',
+
+  -- spectre
+  {
+    'nvim-pack/nvim-spectre',
+    lazy = true,
+    cmd = { 'Spectre' },
+  },
+
+  -- ufo
+  {
+    'kevinhwang91/nvim-ufo',
+    event = 'VeryLazy',
+    dependencies = {
+      'kevinhwang91/promise-async',
+      'luukvbaal/statuscol.nvim',
+    },
+  },
+
+  -- wilder
+  {
+    'gelguy/wilder.nvim',
+    keys = {
+      ':',
+      '/',
+      '?',
+    },
+  },
 }
 
 local opts = {

@@ -16,6 +16,7 @@ local options = {
   backup = true,
   backupcopy = 'yes',
   backupdir = fn.stdpath('data') .. '/backup',
+  breakindent = true,
   clipboard = 'unnamedplus',
   colorcolumn = '+1',
   completeopt = { 'menuone', 'noselect' },
@@ -26,11 +27,14 @@ local options = {
   expandtab = true,
   fileencoding = 'utf-8',
   fileformats = { 'unix', 'dos', 'mac' },
-  foldlevel = 9999,
+  foldcolumn = '1',
+  foldenable = true,
+  foldlevel = 99,
+  foldlevelstart = 99,
   foldmethod = 'expr',
-  foldexpr = 'nvim_treesitter#foldexpr()',
   hidden = true,
   hlsearch = true,
+  ignorecase = true,
   list = true,
   listchars = { tab = '󰞔', space = '·', trail = '·', extends = '', precedes = '' },
   mouse = '',
@@ -40,6 +44,7 @@ local options = {
   signcolumn = 'yes',
   shiftwidth = 2,
   showmode = false,
+  smartcase = true,
   smartindent = true,
   smarttab = false,
   softtabstop = 2,
@@ -53,14 +58,16 @@ local options = {
   undodir = fn.stdpath('data') .. '/undo',
   undofile = true,
   undolevels = 10000,
-  updatetime = 500,
+  updatetime = 50,
   viminfofile = fn.stdpath('data') .. '/viminfo',
   virtualedit = 'all',
   writebackup = true,
+  wrap = false,
 }
 
 vim.opt.formatoptions:append('n')
 vim.opt.iskeyword:append('-')
+vim.opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
 apply_options(options)
 
