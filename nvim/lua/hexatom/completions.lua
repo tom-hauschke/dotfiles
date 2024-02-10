@@ -4,11 +4,6 @@ if not cmp_status_ok then return end
 local snip_status_ok, luasnip = pcall(require, 'luasnip')
 if not snip_status_ok then return end
 
-local check_backspace = function()
-  local col = vim.fn.col('.') - 1
-  return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s')
-end
-
 local kind_icons = {
   Text = '󰦨',
   Method = 'm',
@@ -21,21 +16,31 @@ local kind_icons = {
   Module = '',
   Property = '',
   Unit = '',
-  Value = '',
+  Value = '󰫧',
   Enum = '',
-  Keyword = '',
+  Keyword = '󰸱',
   Snippet = '',
-  Color = '',
-  File = '',
+  Color = '',
+  File = '',
   Reference = '',
-  Folder = '',
+  Folder = '',
   EnumMember = '',
-  Constant = '',
+  Constant = '',
   Struct = '',
   Event = '',
-  Operator = '',
-  TypeParameter = '',
+  Operator = '',
+  TypeParameter = '',
 }
+
+local has_words_before = function()
+  unpack = unpack or table.unpack
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
+end
+
+local s = luasnip.snippet
+local t = luasnip.text_node
+local i = luasnip.insert_node
 
 require('luasnip.loaders.from_vscode').lazy_load()
 
@@ -56,12 +61,10 @@ cmp.setup({
     ['<tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      elseif luasnip.expandable() then
-        luasnip.expand()
-      elseif luasnip.expand_or_jumpable() then
+      elseif luasnip.expand_or_locally_jumpable() then
         luasnip.expand_or_jump()
-      elseif check_backspace() then
-        fallback()
+      elseif has_words_before() then
+        cmp.complete()
       else
         fallback()
       end
@@ -135,4 +138,39 @@ cmp.setup.cmdline(':', {
   }, {
     { name = 'cmdline' },
   }),
+})
+
+luasnip.setup({
+  enable_autosnippets = true,
+  ft_func = require('luasnip.extras.filetype_functions').from_cursor,
+})
+
+-- Umlaute snippets
+luasnip.add_snippets('all', {
+  s('oe', {
+    t('ö'),
+  }),
+  s('ae', {
+    t('ä'),
+  }),
+  s('ue', {
+    t('ü'),
+  }),
+  s('sz', {
+    t('ß'),
+  }),
+}, {
+  type = 'autosnippets',
+  key = 'all_auto',
+})
+
+-- Go snippets
+luasnip.add_snippets('go', {
+  s('iferr', {
+    t({ 'if err != nil {', '\t' }),
+    i(0),
+    t({ '\t', '}' }),
+  }),
+}, {
+  key = 'go',
 })

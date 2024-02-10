@@ -2,9 +2,9 @@ umask 022
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CONFIG_DIRS=/usr/etc/xdg:/etc/xdg
+export PATH="$PATH:$HOME/data/scripts:$HOME/.krew/bin:$HOME/go/bin"
 # Following automatically calls "startx" when you login:
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx -- -keeptty -nolisten tcp > ~/.xorg.log 2>&1
 
 unset TERMCAP
 unset MANPATH
-

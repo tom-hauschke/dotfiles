@@ -14,25 +14,31 @@ export EDITOR='nvim'
 export BROWSER='/usr/bin/firefox'
 export SSH_KEY_PATH='~/.ssh/rsa_id'
 export LESSHISTFILE='-'
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-export KUBECONFIG="$HOME/.kube/config:$HOME/.kube/kubeconfigs/funkedigital/fd-cloud.yaml"
-export PATH="$PATH:$HOME/data/scripts:$HOME/.krew/bin:$HOME/go/bin"
+export MANPAGER="/usr/bin/less -s -M +Gg"
+export KUBECONFIG="$HOME/.config/kube/config"
 export TERM='tmux-256color'
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --no-ignore --follow'
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
+export EXA_COLORS="uu=36:gu=37:sn=32:sb=32:da=34:ur=34:uw=35:ux=36:ue=36:gr=34:gw=35:gx=36:tr=34:tw=35:tx=36:"
+export LESS_TERMCAP_mb=$'\e[1;31m'      # begin bold
+export LESS_TERMCAP_md=$'\e[1;34m'      # begin blink
+export LESS_TERMCAP_so=$'\e[01;45;37m'  # begin reverse video
+export LESS_TERMCAP_us=$'\e[01;36m'     # begin underline
+export LESS_TERMCAP_me=$'\e[0m'         # reset bold/blink
+export LESS_TERMCAP_se=$'\e[0m'         # reset reverse video
+export LESS_TERMCAP_ue=$'\e[0m'         # reset underline
+export GROFF_NO_SGR=1                   # for konsole
 
 ## Alias Section
 # General
 alias df='df -h'
 alias sdn='shutdown now'
 alias sdrn='shutdown -r now'
-alias updateSystem='sudo pacman -Syyu'
-alias trexa='exa -Ta'
-alias trexad='exa -TaD'
 alias sc='i3-scrot -sc --line mode=edge'
 
 # Replacement Section
-alias ls='exa'
-alias la='exa -lah --git'
+alias ls='eza'
+alias la='eza -lah --git'
 alias find='fd'
 alias e='nvim'
 
@@ -42,7 +48,6 @@ alias gf='git fetch -p --tags'
 alias ga='git add -p'
 alias gc='git commit -s'
 alias gp='git push'
-alias gpt='git push --tags'
 alias gl='git pull'
 alias gitu='git add . && git commit && git push'
 alias gcob='git checkout -b'
@@ -59,6 +64,9 @@ alias kcu='kubectl config use-context'
 # Programs
 alias tmux='tmux -f ~/.config/tmux/tmux.conf'
 alias less='less -XRF'
+alias spotify='spotify --force-device-scale-factor=2'
+alias fzf='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
+alias bat='bat --color=always'
 
 # dir movement
 alias ..='cd ..'
@@ -110,6 +118,8 @@ bindkey '^N' history-search-forward
 
 ## Theme Section
 colors
+source ~/data/dracula-theme/zsh-syntax-highlighting/zsh-syntax-highlighting.sh
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=7'
 
 ## Plugin Section
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -120,28 +130,44 @@ source <(kubectl completion zsh)
 source <(minikube completion zsh)
 source <(k9s completion zsh)
 source <(kube-linter completion zsh)
-source <(flux completion zsh)
 source <(terraform-docs completion zsh)
 
-# git prompt config
+## git prompt config
 ZSH_THEME_GIT_PROMPT_PREFIX="["
 ZSH_THEME_GIT_PROMPT_SUFFIX="]"
 ZSH_THEME_GIT_PROMPT_HASH_PREFIX=":"
 ZSH_THEME_GIT_PROMPT_SEPARATOR="|"
 ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[magenta]%}"
 ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[red]%}%{●%G%}"
-ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%}%{✖%G%}"
+ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[red]%}%{󱐋%G%}"
 ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[blue]%}%{%G%}"
-ZSH_THEME_GIT_PROMPT_BEHIND="%{↓%2G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{↓%1G%}"
 ZSH_THEME_GIT_PROMPT_BEHIND_AHEAD_SEPARATOR=""
-ZSH_THEME_GIT_PROMPT_AHEAD="%{↑%2G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND_AHEAD_SECTION_SEPARATOR=" "
+ZSH_THEME_GIT_PROMPT_AHEAD="%{↑%1G%}"
 ZSH_THEME_GIT_PROMPT_STASHED="%{$fg_bold[blue]%}%{%G%}"
-ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%}%{%G%}"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[cyan]%}%{󰈉%G%}"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}%{✔%G%}"
 ZSH_THEME_GIT_PROMPT_LOCAL=" L"
 # The remote branch will be shown between these two
-ZSH_THEME_GIT_PROMPT_UPSTREAM_FRONT=" {%{$fg_bold[blue]%}"
+ZSH_THEME_GIT_PROMPT_UPSTREAM_FRONT=" {%{$fg[blue]%}"
 ZSH_THEME_GIT_PROMPT_UPSTREAM_END="%{${reset_color}%}}"
+ZSH_THEME_GIT_PROMPT_MERGING="%{$fg_bold[magenta]%}|MERGING%{${reset_color}%}"
+ZSH_THEME_GIT_PROMPT_REBASE="%{$fg_bold[magenta]%}|REBASE%{${reset_color}%} "
+ZSH_THEME_GIT_PROMPT_BISECT="%{$fg_bold[magenta]%}|BISECT%{${reset_color}%} "
+
+# Settings defaults
+ZSH_GIT_PROMPT_SHOW_UPSTREAM=0
+ZSH_GIT_PROMPT_SHOW_BEHIND=1
+ZSH_GIT_PROMPT_SHOW_AHEAD=1
+ZSH_GIT_PROMPT_SHOW_REBASE=1
+ZSH_GIT_PROMPT_SHOW_MERGING=1
+ZSH_GIT_PROMPT_SHOW_BISECT=1
+ZSH_GIT_PROMPT_SHOW_STAGED=1
+ZSH_GIT_PROMPT_SHOW_CONFLICTS=1
+ZSH_GIT_PROMPT_SHOW_CHANGED=1
+ZSH_GIT_PROMPT_SHOW_UNTRACKED=1
+ZSH_GIT_PROMPT_SHOW_STASHED=1
 
 ## Primary prompt
 PS1='\
@@ -152,8 +178,9 @@ PS1='\
 %B%F{11}%n%b\
 %F{reset_color%}@\
 %B%F{10}%m%b\
-%B%F{12}%~%b\
-%F{reset_color}
+%B%F{12}%~%b \
+%F{13}<$ZSH_KUBECTL_CONTEXT> \
+%F{reset_color}$(git_super_status)
  %F{12}»\
 %F{reset_color} \
 '

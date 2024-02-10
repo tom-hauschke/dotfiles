@@ -10,10 +10,29 @@ if not lspconfig_status_ok then return end
 local cmp_nvim_lsp_status_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
 if not cmp_nvim_lsp_status_ok then return end
 
-mason.setup()
-
+mason.setup({
+  ui = {
+    icons = {
+      package_installed = '✓',
+      package_pending = '',
+      package_uninstalled = '✗',
+    },
+  },
+})
 mason_lspconfig.setup({
-  ensure_installed = { 'lua_ls', 'jsonls', 'yamlls', 'bashls', 'helm_ls', 'tflint' },
+  ensure_installed = {
+    'lua_ls',
+    'jsonls',
+    'yamlls',
+    'bashls',
+    'helm_ls',
+    'tflint',
+    'terraformls',
+    'gopls',
+    'ansiblels',
+    'azure_pipelines_ls',
+    'dockerls',
+  },
 })
 
 local capabilities = cmp_nvim_lsp.default_capabilities()
@@ -59,3 +78,8 @@ lspconfig.yamlls.setup({
 lspconfig.bashls.setup({})
 lspconfig.helm_ls.setup({})
 lspconfig.tflint.setup({})
+lspconfig.terraformls.setup({})
+lspconfig.gopls.setup({})
+lspconfig.ansiblels.setup({})
+lspconfig.azure_pipelines_ls.setup({})
+lspconfig.dockerls.setup({})

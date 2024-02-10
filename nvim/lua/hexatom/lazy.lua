@@ -27,6 +27,9 @@ local plugins = {
   -- Indentlines
   'lukas-reineke/indent-blankline.nvim',
 
+  -- LSP lines
+  'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+
   -- cmp plugins
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-buffer',
@@ -37,7 +40,11 @@ local plugins = {
   'hrsh7th/cmp-nvim-lua',
 
   -- snippets
-  'L3MON4D3/LuaSnip',
+  {
+    'L3MON4D3/LuaSnip',
+    -- install jsregexp (optional!).
+    build = 'make install_jsregexp',
+  },
   'rafamadriz/friendly-snippets',
 
   -- LSP
@@ -62,9 +69,10 @@ local plugins = {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
   },
-  'p00f/nvim-ts-rainbow',
+  'HiPhish/rainbow-delimiters.nvim',
   'JoosepAlviste/nvim-ts-context-commentstring',
   'nvim-treesitter/playground',
+  'nvim-treesitter/nvim-treesitter-context',
 
   -- Autopairs
   'windwp/nvim-autopairs',

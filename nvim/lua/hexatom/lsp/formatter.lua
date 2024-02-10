@@ -12,21 +12,27 @@ formatter.setup({
   log_level = vim.log.levels.WARN,
   -- All formatter configurations are opt-in
   filetype = {
-    json = {
-      require('formatter.filetypes.json').jq,
+    go = {
       function()
         return {
-          exe = 'jq',
-          args = { '.' },
+          exe = 'golines',
+          args = {
+            '--base-formatter',
+            'goimports',
+            '--chain-split-dots',
+            '-m',
+            '120',
+            '-t',
+            '2',
+          },
           stdin = true,
         }
       end,
     },
-    markdown = {
-      require('formatter.filetypes.markdown').prettier,
+    json = {
+      require('formatter.filetypes.json').jq,
     },
     lua = {
-      require('formatter.filetypes.lua').stylua,
       function()
         return {
           exe = 'stylua',
@@ -43,33 +49,16 @@ formatter.setup({
         }
       end,
     },
+    markdown = {
+      require('formatter.filetypes.markdown').prettier,
+    },
     sh = {
       require('formatter.filetypes.sh').shfmt,
-      function()
-        local shiftwidth = vim.opt.shiftwidth:get()
-        local expandtab = vim.opt.expandtab:get()
-
-        if not expandtab then shiftwidth = 0 end
-
-        return {
-          exe = 'shfmt',
-          args = { '-i', shiftwidth },
-          stdin = true,
-        }
-      end,
     },
     terraform = {
       require('formatter.filetypes.terraform').terraformfmt,
-      function()
-        return {
-          exe = 'terraform',
-          args = { 'fmt', '-' },
-          stdin = true,
-        }
-      end,
     },
     yaml = {
-      require('formatter.filetypes.yaml').yamlfmt,
       function()
         return {
           exe = 'yamlfmt',

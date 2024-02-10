@@ -122,15 +122,15 @@ nvim_tree.setup({
       enable = true,
     },
     icons = {
-      symlink_arrow = '  ',
+      symlink_arrow = '  ',
       glyphs = {
         default = '',
         git = {
           staged = '',
-          renamed = '',
+          renamed = '󰑕',
           untracked = '',
-          deleted = '',
-          ignored = '',
+          deleted = '󰆴',
+          ignored = '',
         },
       },
     },

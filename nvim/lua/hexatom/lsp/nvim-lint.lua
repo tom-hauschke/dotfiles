@@ -1,16 +1,40 @@
-local nvim_lint_status_ok, nvim_lint = pcall(require, 'nvim-lint')
-if not nvim_lint_status_ok then return end
+local status_ok, lint = pcall(require, 'lint')
+if not status_ok then return end
 
-nvim_lint.linters_by_ft = {
-  sh = { 'shellcheck' },
-  lua = { 'luacheck' },
-  json = { 'jsonlint' },
-  md = { 'markdownlint' },
-  yaml = { 'yamllint' },
+lint.linters_by_ft = {
   ansible = { 'ansible_lint' },
-  terraform = { 'tflint' },
+  dockerfile = { 'hadolint' },
+  go = { 'golangcilint' },
+  helm = {},
+  json = { 'jsonlint' },
+  lua = { 'luacheck' },
+  md = { 'markdownlint' },
+  sh = { 'shellcheck' },
+  sql = { 'sqlfluff' },
+  terraform = {
+    'tflint',
+    'tfsec',
+  },
+  yaml = { 'yamllint' },
 }
 
-vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
-  callback = function() require('lint').try_lint() end,
+-- configuration for standard linters
+lint.linters.luacheck.args = {
+  '--config',
+  '~/.config/nvim/lua/hexatom/lsp/configs/luacheckrc',
+}
+lint.linters.yamllint.args = {
+  '-c',
+  '~/.config/nvim/lua/hexatom/lsp/configs/yamllint.yaml',
+}
+
+vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufEnter' }, {
+  group = vim.api.nvim_create_augroup('lint', { clear = true }),
+  callback = function()
+    lint.try_lint()
+    lint.try_lint({
+      'proselint',
+      'woke',
+    })
+  end,
 })
