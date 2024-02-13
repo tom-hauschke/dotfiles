@@ -3,9 +3,6 @@ if not status_ok then return end
 
 wk.setup({
   plugins = {
-    spelling = {
-      enabled = true,
-    },
     presets = false,
   },
   icons = {
@@ -23,9 +20,8 @@ local global_mappings = {
 local normal_mappings = {
   ['<leader>'] = {
     name = 'hexatom',
-    d = { ':lua vim.diagnostic.open_float()<cr>', 'floating diagnostics' },
     e = {
-      name = '+edit configs',
+      name = 'edit configs',
       i = { ':vsplit ~/.config/i3/config<cr>', 'edit i3 config' },
       n = { ':vsplit ~/.config/nvim/init.lua<cr>', 'edit nvim config' },
       t = { ':vsplit ~/.config/tmux/tmux.conf<cr>', 'edit tmux config' },
@@ -33,18 +29,27 @@ local normal_mappings = {
     },
     f = {
       name = 'find',
-      f = { ':Telescope find_files<cr>', 'find file' },
-      h = { ':Telescope oldfiles<cr>', 'recently used files' },
-      r = { ':Telescope live_grep<cr>', 'find string' },
+      c = {
+        function()
+          require('telescope.builtin').commands(require('telescope.themes').get_dropdown({
+            previewer = false,
+          }))
+        end,
+        'find commands',
+      },
+      f = { function() require('telescope.builtin').find_files({ hidden = true }) end, 'find file' },
+      g = { require('telescope.builtin').live_grep, 'find string' },
+      h = { require('telescope.builtin').help_tags, 'find help' },
+      r = { require('telescope.builtin').oldfiles, 'recently used files' },
     },
     g = {
       name = 'gitsigns',
-      j = { ':Gitsigns next_hunk<cr>', 'Next Hunk' },
-      k = { ':Gitsigns prev_hunk<cr>', 'Prev Hunk' },
-      b = { ':Gitsigns blame_line<cr>', 'Blame' },
-      p = { ':Gitsigns preview_hunk<cr>', 'Preview Hunk' },
-      r = { ':Gitsigns reset_hunk<cr>', 'Reset Hunk' },
-      R = { ':Gitsigns reset_buffer<cr>', 'Reset Buffer' },
+      j = { require('gitsigns').next_hunk, 'Next Hunk' },
+      k = { require('gitsigns').prev_hunk, 'Prev Hunk' },
+      b = { require('gitsigns').blame_line, 'Blame' },
+      p = { require('gitsigns').preview_hunk, 'Preview Hunk' },
+      r = { require('gitsigns').reset_hunk, 'Reset Hunk' },
+      R = { require('gitsigns').reset_buffer, 'Reset Buffer' },
     },
     h = { '<c-w>h', 'move left' },
     j = { '<c-w>j', 'move down' },
@@ -52,19 +57,19 @@ local normal_mappings = {
     l = { '<c-w>l', 'move right' },
     n = { '<c-w>=', 'normalize windows' },
     o = { '<c-w>v', 'split pane vertically' },
-    r = { ':lua vim.lsp.buf.rename()<cr>', 'rename token' },
+    r = { vim.lsp.buf.rename, 'rename token' },
     p = { ':set paste!<cr>', 'toggle paste mode' },
     s = {
-      w = { ':lua require("spectre").open_visual({select_word=true})<cr>', 'search current word' },
+      w = { function() require('spectre').open_visual({ select_word = true }) end, 'search current word' },
     },
-    S = { ':lua require("spectre").toggle()<cr>', 'toggle spectre' },
+    S = { require('spectre').toggle, 'toggle spectre' },
     t = {
       name = 'trees and lists',
-      d = { ':lua vim.diagnostic.setloclist()<cr>', 'open diagnostics list' },
+      d = { vim.diagnostic.setloclist, 'open diagnostics list' },
       f = { ':NvimTreeFocus<cr>', 'open file tree' },
       l = { ':noautocmd bufdo vimgrepadd /TODO/j % | copen<cr>', 'open TODO list' },
-      r = { ':lua vim.lsp.buf.references()<cr>', 'open references list' },
-      u = { ':lua require("undotree").toggle { async = true }<cr>', 'open undo tree' },
+      r = { vim.lsp.buf.references, 'open references list' },
+      u = { function() require('undotree').toggle({ async = true }) end, 'open undo tree' },
     },
     u = { '<c-w>s', 'split pane horizontally' },
     w = { ':w<cr>', 'save file' },
@@ -84,35 +89,18 @@ local normal_mappings = {
       X = { ':Bdelete!<cr>:q<cr>', 'force close buffer + window' },
     },
     ['<leader>'] = { ':ToggleTerm<cr>', 'open floating terminal' },
-    z = {
-      name = 'folding',
-      c = { 'close fold under cursor' },
-      C = { 'close all folds under cursor' },
-      M = { ':lua require("ufo").closeAllFolds()<cr>', 'close all folds' },
-      o = { 'open fold under cursor' },
-      O = { 'open all folds under cursor' },
-      R = { ':lua require("ufo").openAllFolds()<cr>', 'open all folds' },
-    },
     ['='] = { ':Format<cr>', 'format file' },
   },
   g = {
     name = 'goto',
-    d = { ':lua vim.lsp.buf.definition()<cr>', 'definition' },
-    i = { ':lua vim.lsp.buf.implementation()<cr>', 'implementation' },
-    n = {
-      name = 'next',
-      d = { ':lua vim.diagnostic.goto_next', 'diagnostic' },
-    },
-    p = {
-      name = 'previous',
-      d = { ':lua vim.diagnostic.goto_prev', 'diagnostic' },
-    },
-    r = { ':lua require("telescope.builtin").lsp_references()<cr>', 'references' },
+    d = { vim.lsp.buf.definition, 'definition' },
+    i = { vim.lsp.buf.implementation, 'implementation' },
+    r = { require('telescope.builtin').lsp_references, 'references' },
     x = { ':sil !xdg-open <c-r><c-a><cr>', 'open link' },
   },
   H = { ':bprev<cr>', 'focus previous buffer' },
   ['<c-j>'] = { ':m +1<cr>', 'move line up' },
-  K = { ':lua vim.lsp.buf.hover()<cr>', 'open hover menu' },
+  K = { vim.lsp.buf.hover, 'open hover menu' },
   ['<c-k>'] = { ':m -2<cr>', 'move line down' },
   L = { ':bnext<cr>', 'focus next buffer' },
   ['<c-w>'] = {
@@ -121,12 +109,34 @@ local normal_mappings = {
     j = { '<nop>', 'which_key_ignore' },
     k = { '<nop>', 'which_key_ignore' },
     l = { '<nop>', 'which_key_ignore' },
-    ['='] = { '<nop>', 'which_key_ignore' },
     s = { '<nop>', 'which_key_ignore' },
     v = { '<nop>', 'which_key_ignore' },
+    ['='] = { '<nop>', 'which_key_ignore' },
   },
+  U = { '<c-r>', 'redo' },
   Y = { 'y$', 'which_key_ignore' },
+  z = {
+    name = 'folding',
+    c = { 'close fold under cursor' },
+    C = { 'close all folds under cursor' },
+    M = { require('ufo').closeAllFolds, 'close all folds' },
+    o = { 'open fold under cursor' },
+    O = { 'open all folds under cursor' },
+    R = { require('ufo').openAllFolds, 'open all folds' },
+  },
   ['<esc>'] = { ':noh<cr>:echo<cr>', 'clear highlight and message' },
+  ['['] = {
+    name = 'next item in category',
+    d = { ':lua vim.diagnostic.goto_next({})', 'next diagnostic' },
+    e = { ':lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})', 'next error' },
+    w = { ':lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.WARN})', 'next warning' },
+  },
+  [']'] = {
+    name = 'prev item in category',
+    d = { ':lua vim.diagnostic.goto_prev({})', 'prev diagnostic' },
+    e = { ':lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})', 'prev error' },
+    w = { ':lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.WARN})', 'prev warning' },
+  },
 }
 
 local insert_mappings = {
@@ -143,11 +153,20 @@ local visual_mappings = {
   s = {
     w = { '<esc>:lua require("spectre").open_visual()<cr>' },
   },
+  ['<c-j>'] = { ":m '>+1<cr>gv=gv", 'move line down' },
+  ['<c-k>'] = { ":m '<-2<cr>gv=gv", 'move line up' },
   ['<'] = { '<gv', 'which_key_ignore' },
   ['>'] = { '>gv', 'which_key_ignore' },
+}
+
+local select_mappings = {
+  p = { 'p', 'fix select mode' },
+  a = { 'a', 'fix select mode' },
+  g = { 'g', 'fix select mode' },
 }
 
 wk.register(normal_mappings)
 wk.register(global_mappings, { mode = '' })
 wk.register(insert_mappings, { mode = 'i' })
 wk.register(visual_mappings, { mode = 'v' })
+wk.register(select_mappings, { mode = 's' })

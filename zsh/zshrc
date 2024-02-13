@@ -61,6 +61,10 @@ alias dkrpsa='docker ps -a'
 alias k='kubectl'
 alias kcu='kubectl config use-context'
 
+# Terraform
+alias tf='terraform'
+alias tfdocs='terraform-docs markdown table --output-file README.md --output-mode inject .'
+
 # Programs
 alias tmux='tmux -f ~/.config/tmux/tmux.conf'
 alias less='less -XRF'
@@ -120,6 +124,7 @@ bindkey '^N' history-search-forward
 colors
 source ~/data/dracula-theme/zsh-syntax-highlighting/zsh-syntax-highlighting.sh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=7'
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 ## Plugin Section
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

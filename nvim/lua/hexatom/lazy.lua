@@ -66,7 +66,10 @@ local plugins = {
       'mfussenegger/nvim-lint',
       'mhartington/formatter.nvim',
       'mfussenegger/nvim-ansible',
-      'towolf/vim-helm',
+      {
+        'towolf/vim-helm',
+        ft = 'helm',
+      },
       'b0o/schemastore.nvim',
       'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
     },
@@ -124,7 +127,14 @@ local plugins = {
   },
 
   -- Whichkey
-  'folke/which-key.nvim',
+  {
+    'folke/which-key.nvim',
+    event = 'VeryLazy',
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+  },
 
   -- gitignore
   'wintermute-cell/gitignore.nvim',

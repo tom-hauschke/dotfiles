@@ -55,7 +55,13 @@ local servers = {
   bashls = {},
   dockerls = {},
   gopls = {},
-  helm_ls = {},
+  helm_ls = {
+    ['helm_ls'] = {
+      yamlls = {
+        path = 'yaml-language-server',
+      },
+    },
+  },
   jsonls = {
     settings = {
       json = {
