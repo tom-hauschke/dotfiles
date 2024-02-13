@@ -56,7 +56,7 @@ local servers = {
   dockerls = {},
   gopls = {},
   helm_ls = {
-    ['helm_ls'] = {
+    ['helm-ls'] = {
       yamlls = {
         path = 'yaml-language-server',
       },
