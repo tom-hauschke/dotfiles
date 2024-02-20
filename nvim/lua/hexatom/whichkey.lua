@@ -127,15 +127,15 @@ local normal_mappings = {
   ['<esc>'] = { ':noh<cr>:echo<cr>', 'clear highlight and message' },
   ['['] = {
     name = 'next item in category',
-    d = { ':lua vim.diagnostic.goto_next({})', 'next diagnostic' },
-    e = { ':lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})', 'next error' },
-    w = { ':lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.WARN})', 'next warning' },
+    d = { function() vim.diagnostic.goto_next({}) end, 'next diagnostic' },
+    e = { function() vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR}) end, 'next error' },
+    w = { function() vim.diagnostic.goto_next({severity = vim.diagnostic.severity.WARN}) end, 'next warning' },
   },
   [']'] = {
     name = 'prev item in category',
-    d = { ':lua vim.diagnostic.goto_prev({})', 'prev diagnostic' },
-    e = { ':lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})', 'prev error' },
-    w = { ':lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.WARN})', 'prev warning' },
+    d = { function() vim.diagnostic.goto_prev({}) end, 'prev diagnostic' },
+    e = { function() vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR}) end, 'prev error' },
+    w = { function() vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.WARN}) end, 'prev warning' },
   },
 }
 
@@ -151,7 +151,7 @@ local insert_mappings = {
 local visual_mappings = {
   p = { '"_dP', 'which_key_ignore' },
   s = {
-    w = { '<esc>:lua require("spectre").open_visual()<cr>' },
+    w = { function() require("spectre").open_visual() end, 'open Spectre' },
   },
   ['<c-j>'] = { ":m '>+1<cr>gv=gv", 'move line down' },
   ['<c-k>'] = { ":m '<-2<cr>gv=gv", 'move line up' },
